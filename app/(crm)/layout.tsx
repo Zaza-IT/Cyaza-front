@@ -1,6 +1,6 @@
 import React from "react"
-import { CRMSidebar } from '@/components/crm/sidebar';
-import { CRMHeader } from '@/components/crm/header';
+import { CRMSidebar } from '../../components/crm/sidebar';
+import { CRMHeader } from '../../components/crm/header';
 
 export default function CRMLayout({
   children,

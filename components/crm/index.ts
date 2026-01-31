@@ -6,3 +6,4 @@ export { KanbanCard } from './kanban-card';
 export { KanbanColumn } from './kanban-column';
 export { CRMSidebar } from './sidebar';
 export { CRMHeader } from './header';
+export { UserMenu } from './user-menu';

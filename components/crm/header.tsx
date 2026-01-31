@@ -1,8 +1,10 @@
-"use client";
-
 import { Search, Bell } from 'lucide-react';
+import { getSessionData } from '@/lib/auth/actions';
+import { UserMenu } from './user-menu';
 
-export function CRMHeader() {
+export async function CRMHeader() {
+  const session = await getSessionData();
+  
   return (
     <header className="bg-white/80 backdrop-blur-md h-16 border-b border-slate-200 flex items-center justify-between px-6 sticky top-0 z-20">
       <div className="md:hidden font-bold text-lg text-slate-800">CRM Nexus</div>
@@ -21,6 +23,10 @@ export function CRMHeader() {
           <Bell size={20} />
           <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
         </button>
+        
+        {session && (
+          <UserMenu user={session.user} tenant={session.tenant} />
+        )}
       </div>
     </header>
   );
