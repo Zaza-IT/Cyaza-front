@@ -1,6 +1,7 @@
 'use client';
 
 import { useActionState } from 'react';
+import Link from 'next/link';
 import { login, type LoginFormState } from '@/lib/auth/actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -79,14 +80,28 @@ export default function LoginPage() {
             </Button>
           </form>
           
-          <div className="mt-6 pt-6 border-t">
-            <p className="text-sm text-muted-foreground text-center">
-              Credenciais de demonstração:
-            </p>
-            <div className="mt-2 space-y-1 text-xs text-muted-foreground text-center">
-              <p><span className="font-medium">admin</span> / admin123</p>
-              <p><span className="font-medium">carlos</span> / carlos123</p>
-              <p><span className="font-medium">ana</span> / ana123</p>
+          <div className="mt-6 pt-6 border-t space-y-4">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">
+                Ainda não tem uma conta?{' '}
+                <Link 
+                  href="/signup" 
+                  className="font-medium text-primary hover:underline"
+                >
+                  Criar conta
+                </Link>
+              </p>
+            </div>
+            
+            <div className="pt-4 border-t">
+              <p className="text-sm text-muted-foreground text-center">
+                Credenciais de demonstração:
+              </p>
+              <div className="mt-2 space-y-1 text-xs text-muted-foreground text-center">
+                <p><span className="font-medium">admin</span> / admin123</p>
+                <p><span className="font-medium">carlos</span> / carlos123</p>
+                <p><span className="font-medium">ana</span> / ana123</p>
+              </div>
             </div>
           </div>
         </CardContent>

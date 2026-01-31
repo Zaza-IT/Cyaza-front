@@ -2,7 +2,7 @@
 // This file simulates Django backend responses
 // Replace with actual API calls to Django when ready
 
-import type { User, Tenant, LoginCredentials, AuthResult, Session } from './types';
+import type { User, Tenant, LoginCredentials, AuthResult, Session, SignUpCredentials, SignUpResult } from './types';
 
 // Mock Users (would come from Django's public schema)
 const mockUsers: Record<string, { user: User; password: string; tenantId: string }> = {
@@ -119,4 +119,104 @@ export async function validateSession(sessionData: Session | null): Promise<bool
   if (!sessionData.user?.isActive) return false;
   if (!sessionData.tenant?.isActive) return false;
   return true;
+}
+
+/**
+ * Mock registration function
+ * Replace this with actual Django API call:
+ * 
+ * export async function registerWithDjango(credentials: SignUpCredentials): Promise<SignUpResult> {
+ *   const response = await fetch(`${process.env.DJANGO_API_URL}/api/auth/register/`, {
+ *     method: 'POST',
+ *     headers: { 'Content-Type': 'application/json' },
+ *     body: JSON.stringify(credentials),
+ *   });
+ *   return response.json();
+ * }
+ */
+export async function registerUser(credentials: SignUpCredentials): Promise<SignUpResult> {
+  // Simulate network delay
+  await new Promise(resolve => setTimeout(resolve, 800));
+
+  const { username, password, confirmPassword, firstName, lastName, tenantName } = credentials;
+  
+  // Validation errors object
+  const errors: Record<string, string> = {};
+
+  // Validate username
+  if (!username || username.length < 3) {
+    errors.username = 'Usuário deve ter pelo menos 3 caracteres';
+  } else if (mockUsers[username.toLowerCase()]) {
+    errors.username = 'Este usuário já existe';
+  } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+    errors.username = 'Usuário pode conter apenas letras, números e underscore';
+  }
+
+  // Validate password
+  if (!password || password.length < 6) {
+    errors.password = 'Senha deve ter pelo menos 6 caracteres';
+  }
+
+  // Validate password confirmation
+  if (password !== confirmPassword) {
+    errors.confirmPassword = 'As senhas não coincidem';
+  }
+
+  // Validate first name
+  if (!firstName || firstName.trim().length < 2) {
+    errors.firstName = 'Nome deve ter pelo menos 2 caracteres';
+  }
+
+  // Validate last name
+  if (!lastName || lastName.trim().length < 2) {
+    errors.lastName = 'Sobrenome deve ter pelo menos 2 caracteres';
+  }
+
+  // Return errors if any
+  if (Object.keys(errors).length > 0) {
+    return { success: false, error: 'Corrija os erros no formulário', errors };
+  }
+
+  // Generate new IDs
+  const userId = `user-${Date.now()}`;
+  const newTenantId = tenantName ? `tenant-${Date.now()}` : 'tenant-1';
+
+  // Create new tenant if name provided
+  if (tenantName && tenantName.trim()) {
+    const newTenant: Tenant = {
+      id: newTenantId,
+      name: tenantName.trim(),
+      schema: `tenant_${tenantName.toLowerCase().replace(/\s+/g, '_')}`,
+      isActive: true,
+    };
+    mockTenants[newTenantId] = newTenant;
+  }
+
+  // Create new user
+  const newUser: User = {
+    id: userId,
+    username: username.toLowerCase(),
+    firstName: firstName.trim(),
+    lastName: lastName.trim(),
+    role: tenantName ? 'admin' : 'viewer', // Admin if creating new tenant
+    isActive: true,
+  };
+
+  // Add user to mock database
+  mockUsers[username.toLowerCase()] = {
+    user: newUser,
+    password: password, // In production, Django handles password hashing
+    tenantId: newTenantId,
+  };
+
+  return { success: true, user: newUser };
+}
+
+/**
+ * Check if username is available
+ * Replace with Django API call
+ */
+export async function checkUsernameAvailability(username: string): Promise<boolean> {
+  await new Promise(resolve => setTimeout(resolve, 200));
+  return !mockUsers[username.toLowerCase()];
 }

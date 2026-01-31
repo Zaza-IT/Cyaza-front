@@ -33,3 +33,20 @@ export interface AuthResult {
   error?: string;
   session?: Session;
 }
+
+export interface SignUpCredentials {
+  username: string;
+  password: string;
+  confirmPassword: string;
+  firstName: string;
+  lastName: string;
+  tenantName?: string; // For creating a new tenant
+  tenantId?: string; // For joining an existing tenant
+}
+
+export interface SignUpResult {
+  success: boolean;
+  error?: string;
+  errors?: Record<string, string>; // Field-specific errors
+  user?: User;
+}

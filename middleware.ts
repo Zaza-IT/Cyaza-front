@@ -4,10 +4,10 @@ import type { NextRequest } from 'next/server';
 const SESSION_COOKIE_NAME = 'crm_session';
 
 // Routes that don't require authentication
-const publicRoutes = ['/login', '/api/auth/login'];
+const publicRoutes = ['/login', '/signup', '/api/auth/login', '/api/auth/signup'];
 
 // Routes that should redirect to dashboard if already authenticated
-const authRoutes = ['/login'];
+const authRoutes = ['/login', '/signup'];
 
 function decryptSession(encrypted: string): { expiresAt: number } | null {
   try {

@@ -2,12 +2,18 @@
 
 import { redirect } from 'next/navigation';
 import { createSession, destroySession, getSession } from './session';
-import { authenticateUser } from './mock-auth';
-import type { LoginCredentials, Session, User, Tenant } from './types';
+import { authenticateUser, registerUser } from './mock-auth';
+import type { LoginCredentials, SignUpCredentials, Session, User, Tenant } from './types';
 
 export interface LoginFormState {
   success: boolean;
   error?: string;
+}
+
+export interface SignUpFormState {
+  success: boolean;
+  error?: string;
+  errors?: Record<string, string>;
 }
 
 /**
@@ -39,6 +45,53 @@ export async function login(
 
   // Redirect to dashboard
   redirect('/dashboard');
+}
+
+/**
+ * Server Action: Sign Up
+ * Handles form submission for registration
+ */
+export async function signUp(
+  _prevState: SignUpFormState,
+  formData: FormData
+): Promise<SignUpFormState> {
+  const username = formData.get('username') as string;
+  const password = formData.get('password') as string;
+  const confirmPassword = formData.get('confirmPassword') as string;
+  const firstName = formData.get('firstName') as string;
+  const lastName = formData.get('lastName') as string;
+  const tenantName = formData.get('tenantName') as string | undefined;
+
+  const credentials: SignUpCredentials = {
+    username,
+    password,
+    confirmPassword,
+    firstName,
+    lastName,
+    tenantName: tenantName || undefined,
+  };
+
+  // Register with mock data (replace with Django API call)
+  const result = await registerUser(credentials);
+
+  if (!result.success) {
+    return {
+      success: false,
+      error: result.error,
+      errors: result.errors,
+    };
+  }
+
+  // Auto-login after successful registration
+  const loginResult = await authenticateUser({ username, password });
+  
+  if (loginResult.success && loginResult.session) {
+    await createSession(loginResult.session);
+    redirect('/dashboard');
+  }
+
+  // If auto-login fails, redirect to login page
+  redirect('/login?registered=true');
 }
 
 /**
