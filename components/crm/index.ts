@@ -7,3 +7,4 @@ export { KanbanColumn } from './kanban-column';
 export { CRMSidebar } from './sidebar';
 export { CRMHeader } from './header';
 export { UserMenu } from './user-menu';
+export { LeadDetailSheet } from './lead-detail-sheet';

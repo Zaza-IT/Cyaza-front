@@ -8,7 +8,8 @@ import {
   Filter, 
   DollarSign, 
   Package, 
-  ChevronDown
+  ChevronDown,
+  UserPlus
 } from 'lucide-react';
 import { SidebarItem } from './sidebar-item';
 
@@ -31,11 +32,17 @@ export function CRMSidebar() {
           active={pathname === '/dashboard'} 
           href="/dashboard"
         />
-        <SidebarItem 
+<SidebarItem 
           icon={Filter} 
           label="Pipeline de Vendas" 
           active={pathname === '/pipeline'} 
           href="/pipeline"
+        />
+        <SidebarItem 
+          icon={UserPlus} 
+          label="Leads" 
+          active={pathname === '/leads'} 
+          href="/leads"
         />
         <SidebarItem icon={FileText} label="Gestão de Contratos" href="#" />
         <SidebarItem icon={Users} label="Clientes" href="#" />
