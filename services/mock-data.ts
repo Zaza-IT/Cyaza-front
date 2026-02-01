@@ -1,4 +1,4 @@
-import type { KanbanData, KanbanItem, ChartDataItem, RankingDataItem } from '@/lib/types';
+import type { KanbanData, KanbanItem, ChartDataItem, RankingDataItem, Lead } from '@/lib/types';
 
 export const chartData: ChartDataItem[] = [
   { name: 'Sem 1', contratos: 4, valor: 2400 },
@@ -64,3 +64,232 @@ export const getAllKanbanItems = (): KanbanItem[] => {
   });
   return allItems;
 };
+
+// Mock Leads Data
+// In production, replace with API calls:
+// export async function getLeads(): Promise<Lead[]> {
+//   const response = await fetch(`${process.env.API_URL}/api/leads/`);
+//   return response.json();
+// }
+export const mockLeads: Lead[] = [
+  {
+    id: 'lead-1',
+    name: 'Ricardo Almeida',
+    company: 'TechSolutions Ltda',
+    position: 'Diretor de TI',
+    contact: {
+      email: 'ricardo@techsolutions.com.br',
+      phone: '(11) 99999-1234',
+      whatsapp: '(11) 99999-1234',
+    },
+    estimatedValue: 45000,
+    stage: 'qualificado',
+    temperature: 'quente',
+    source: 'linkedin',
+    interests: [
+      { id: 'int-1', service: 'Consultoria Estratégica', priority: 'alta' },
+      { id: 'int-2', service: 'Implementação ERP', priority: 'media' },
+    ],
+    meetings: [
+      { id: 'meet-1', date: '2024-08-15', time: '14:00', type: 'video', notes: 'Apresentação inicial do produto', completed: true },
+      { id: 'meet-2', date: '2024-08-22', time: '10:00', type: 'presencial', notes: 'Demonstração técnica', completed: false },
+    ],
+    notes: [
+      { id: 'note-1', content: 'Cliente muito interessado em automação de processos. Tem budget aprovado para Q3.', createdAt: '2024-08-12', author: 'Carlos' },
+    ],
+    responsible: 'Carlos Mendes',
+    responsibleId: 'user-1',
+    createdAt: '2024-08-10',
+    updatedAt: '2024-08-15',
+    lastContactAt: '2024-08-15',
+    nextFollowUp: '2024-08-22',
+    tags: ['enterprise', 'tech', 'urgente'],
+  },
+  {
+    id: 'lead-2',
+    name: 'Fernanda Costa',
+    company: 'Grupo Martins',
+    position: 'CEO',
+    contact: {
+      email: 'fernanda@grupomartins.com.br',
+      phone: '(21) 98888-5678',
+      whatsapp: '(21) 98888-5678',
+    },
+    estimatedValue: 120000,
+    stage: 'proposta',
+    temperature: 'quente',
+    source: 'indicacao',
+    interests: [
+      { id: 'int-3', service: 'Auditoria Fiscal', priority: 'alta' },
+      { id: 'int-4', service: 'Consultoria Tributária', priority: 'alta' },
+    ],
+    meetings: [
+      { id: 'meet-3', date: '2024-08-08', time: '09:00', type: 'call', notes: 'Primeiro contato', completed: true },
+      { id: 'meet-4', date: '2024-08-14', time: '15:00', type: 'video', notes: 'Reunião com diretoria', completed: true },
+      { id: 'meet-5', date: '2024-08-25', time: '11:00', type: 'presencial', notes: 'Apresentação da proposta final', completed: false },
+    ],
+    notes: [
+      { id: 'note-2', content: 'Grupo em expansão, planejando abrir 3 novas filiais.', createdAt: '2024-08-08', author: 'Ana' },
+      { id: 'note-3', content: 'Muito satisfeita com a reunião. Pediu proposta detalhada.', createdAt: '2024-08-14', author: 'Ana' },
+    ],
+    responsible: 'Ana Silva',
+    responsibleId: 'user-2',
+    createdAt: '2024-08-05',
+    updatedAt: '2024-08-14',
+    lastContactAt: '2024-08-14',
+    nextFollowUp: '2024-08-25',
+    tags: ['varejo', 'grande-porte', 'indicação-vip'],
+  },
+  {
+    id: 'lead-3',
+    name: 'Bruno Ferreira',
+    company: 'Alpha Varejo',
+    position: 'Gerente Comercial',
+    contact: {
+      email: 'bruno@alphavarejo.com',
+      phone: '(31) 97777-9012',
+    },
+    estimatedValue: 28000,
+    stage: 'contato',
+    temperature: 'morno',
+    source: 'website',
+    interests: [
+      { id: 'int-5', service: 'Treinamento Corporativo', priority: 'media' },
+    ],
+    meetings: [
+      { id: 'meet-6', date: '2024-08-18', time: '16:00', type: 'call', notes: 'Ligação de qualificação', completed: false },
+    ],
+    notes: [],
+    responsible: 'Carlos Mendes',
+    responsibleId: 'user-1',
+    createdAt: '2024-08-16',
+    updatedAt: '2024-08-16',
+    lastContactAt: undefined,
+    nextFollowUp: '2024-08-18',
+    tags: ['varejo', 'medio-porte'],
+  },
+  {
+    id: 'lead-4',
+    name: 'Mariana Santos',
+    company: 'Startup Innovate',
+    position: 'Co-founder',
+    contact: {
+      email: 'mariana@innovate.io',
+      phone: '(11) 96666-3456',
+      whatsapp: '(11) 96666-3456',
+    },
+    estimatedValue: 15000,
+    stage: 'novo',
+    temperature: 'frio',
+    source: 'evento',
+    interests: [
+      { id: 'int-6', service: 'Consultoria Estratégica', priority: 'baixa' },
+    ],
+    meetings: [],
+    notes: [
+      { id: 'note-4', content: 'Conhecida no evento TechWeek. Empresa em estágio inicial, pode crescer.', createdAt: '2024-08-17', author: 'Roberto' },
+    ],
+    responsible: 'Roberto Lima',
+    responsibleId: 'user-3',
+    createdAt: '2024-08-17',
+    updatedAt: '2024-08-17',
+    lastContactAt: '2024-08-17',
+    nextFollowUp: '2024-08-24',
+    tags: ['startup', 'tech', 'potencial'],
+  },
+  {
+    id: 'lead-5',
+    name: 'Paulo Oliveira',
+    company: 'Logística Express',
+    position: 'Diretor de Operações',
+    contact: {
+      email: 'paulo@logisticaexpress.com.br',
+      phone: '(41) 95555-7890',
+      whatsapp: '(41) 95555-7890',
+    },
+    estimatedValue: 180000,
+    stage: 'negociacao',
+    temperature: 'quente',
+    source: 'cold_call',
+    interests: [
+      { id: 'int-7', service: 'Implementação ERP', priority: 'alta' },
+      { id: 'int-8', service: 'Consultoria em Logística', priority: 'alta' },
+      { id: 'int-9', service: 'Treinamento de Equipe', priority: 'media' },
+    ],
+    meetings: [
+      { id: 'meet-7', date: '2024-07-25', time: '10:00', type: 'call', notes: 'Prospecção inicial', completed: true },
+      { id: 'meet-8', date: '2024-08-02', time: '14:00', type: 'video', notes: 'Demo do sistema', completed: true },
+      { id: 'meet-9', date: '2024-08-10', time: '09:00', type: 'presencial', notes: 'Visita técnica', completed: true },
+      { id: 'meet-10', date: '2024-08-20', time: '15:00', type: 'video', notes: 'Negociação final', completed: false },
+    ],
+    notes: [
+      { id: 'note-5', content: 'Empresa em rápido crescimento. Precisam urgentemente de um ERP robusto.', createdAt: '2024-07-25', author: 'Ana' },
+      { id: 'note-6', content: 'Visita foi excelente. Conhecemos toda a operação.', createdAt: '2024-08-10', author: 'Ana' },
+      { id: 'note-7', content: 'Estão comparando com 2 concorrentes. Preço é importante mas não decisivo.', createdAt: '2024-08-12', author: 'Ana' },
+    ],
+    responsible: 'Ana Silva',
+    responsibleId: 'user-2',
+    createdAt: '2024-07-25',
+    updatedAt: '2024-08-12',
+    lastContactAt: '2024-08-12',
+    nextFollowUp: '2024-08-20',
+    tags: ['logistica', 'grande-porte', 'erp', 'prioridade'],
+  },
+  {
+    id: 'lead-6',
+    name: 'Carla Mendonça',
+    company: 'Consultoria Beta',
+    position: 'Sócia-diretora',
+    contact: {
+      email: 'carla@consultoriabeta.com.br',
+      phone: '(11) 94444-2345',
+    },
+    estimatedValue: 35000,
+    stage: 'qualificado',
+    temperature: 'morno',
+    source: 'indicacao',
+    interests: [
+      { id: 'int-10', service: 'Parceria Comercial', priority: 'alta' },
+    ],
+    meetings: [
+      { id: 'meet-11', date: '2024-08-19', time: '11:00', type: 'video', notes: 'Discussão de parceria', completed: false },
+    ],
+    notes: [
+      { id: 'note-8', content: 'Indicada pelo Grupo Martins. Interesse em parceria para atender clientes em comum.', createdAt: '2024-08-15', author: 'Carlos' },
+    ],
+    responsible: 'Carlos Mendes',
+    responsibleId: 'user-1',
+    createdAt: '2024-08-15',
+    updatedAt: '2024-08-15',
+    lastContactAt: '2024-08-15',
+    nextFollowUp: '2024-08-19',
+    tags: ['parceria', 'consultoria'],
+  },
+];
+
+// Helper functions for Leads (simulate API calls)
+export function getLeads(): Lead[] {
+  return mockLeads;
+}
+
+export function getLeadById(id: string): Lead | undefined {
+  return mockLeads.find(lead => lead.id === id);
+}
+
+export function updateLead(id: string, data: Partial<Lead>): Lead | null {
+  const index = mockLeads.findIndex(lead => lead.id === id);
+  if (index === -1) return null;
+  mockLeads[index] = { ...mockLeads[index], ...data, updatedAt: new Date().toISOString().split('T')[0] };
+  return mockLeads[index];
+}
+
+export function createLead(data: Omit<Lead, 'id' | 'createdAt' | 'updatedAt'>): Lead {
+  const newLead: Lead = {
+    ...data,
+    id: `lead-${Date.now()}`,
+    createdAt: new Date().toISOString().split('T')[0],
+    updatedAt: new Date().toISOString().split('T')[0],
+  };
+  mockLeads.push(newLead);
+  return newLead;
+}
