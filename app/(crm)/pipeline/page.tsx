@@ -1,18 +1,23 @@
 "use client";
 
+import { useState } from 'react';
 import { 
   LayoutDashboard, 
   Search, 
   Filter, 
   Calendar, 
   Users, 
-  ListFilter 
+  ListFilter,
+  LayoutList
 } from 'lucide-react';
 import { KanbanColumn } from '@/components/crm/kanban-column';
 import { initialKanbanData, getAllKanbanItems } from '@/services/mock-data';
 
 export default function PipelinePage() {
   const flatItems = getAllKanbanItems();
+  const [viewMode, setViewMode] = useState<'grid' | 'kanban'>('grid');
+
+  
 
   return (
     <div className="flex flex-col h-full space-y-6">
@@ -25,6 +30,20 @@ export default function PipelinePage() {
           + Nova Oportunidade
         </button>
       </div>
+
+      <div className="flex items-center gap-2">
+  <button
+    onClick={() => setViewMode(viewMode === 'grid' ? 'kanban' : 'grid')}
+    className="p-2 border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50"
+    title={viewMode === 'grid' ? 'Ver Kanban' : 'Ver Lista'}
+  >
+    {viewMode === 'grid' ? <LayoutDashboard size={18} /> : <LayoutList size={18} />}
+  </button>
+
+  <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium shadow-sm shadow-blue-600/20">
+    + Nova Oportunidade
+  </button>
+</div>
 
       {/* Filters Bar */}
       <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-wrap gap-4 items-center justify-between">
@@ -50,6 +69,8 @@ export default function PipelinePage() {
       </div>
 
       {/* Grid Zone (Upper) */}
+      {viewMode === 'grid' &&(
+
       <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex-shrink-0 max-h-[300px] overflow-y-auto">
         <div className="p-4 border-b border-slate-100 bg-slate-50 font-semibold text-sm text-slate-700 flex items-center gap-2 sticky top-0">
           <ListFilter size={16} /> 
@@ -98,8 +119,11 @@ export default function PipelinePage() {
           </tbody>
         </table>
       </div>
+      )} 
 
       {/* Kanban Zone (Lower) */}
+      {viewMode === 'kanban' && (
+
       <div className="flex-1 flex flex-col min-h-[400px]">
         <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-4">
           <LayoutDashboard size={20} className="text-blue-600"/>
@@ -135,6 +159,7 @@ export default function PipelinePage() {
           </div>
         </div>
       </div>
+      )}
     </div>
   );
 }
