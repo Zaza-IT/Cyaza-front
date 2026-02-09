@@ -9,7 +9,8 @@ import {
   DollarSign, 
   Package, 
   ChevronDown,
-  UserPlus
+  UserPlus,
+  Bot
 } from 'lucide-react';
 import { SidebarItem } from './sidebar-item';
 
@@ -43,6 +44,12 @@ export function CRMSidebar() {
           label="Leads" 
           active={pathname === '/leads'} 
           href="/leads"
+        />
+        <SidebarItem 
+          icon={Bot}
+          label="Automações" 
+          active={pathname === '/automations'} 
+          href="/automations"
         />
         <SidebarItem icon={FileText} label="Gestão de Contratos" href="#" />
         <SidebarItem icon={Users} label="Clientes" href="#" />

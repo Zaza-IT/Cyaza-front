@@ -293,3 +293,38 @@ export function createLead(data: Omit<Lead, 'id' | 'createdAt' | 'updatedAt'>): 
   mockLeads.push(newLead);
   return newLead;
 }
+
+export const automationsMock = [
+  {
+    id: 'auto-1',
+    title: 'Cobrança recorrente - Mensal',
+    status: 'online', // online | warning | offline
+    onlineSince: '2024-11-10 08:32',
+    info: 'Próximo pagamento em 2 dias',
+    logs: [
+      { date: '2025-02-05 09:12', message: 'Cobrança gerada com sucesso' },
+      { date: '2025-02-04 09:11', message: 'Cobrança gerada com sucesso' },
+    ],
+  },
+  {
+    id: 'auto-2',
+    title: 'Envio de Nota Fiscal',
+    status: 'warning',
+    onlineSince: '2024-12-01 10:00',
+    info: 'Limite mensal atingido',
+    logs: [
+      { date: '2025-02-06 14:22', message: 'Execução bloqueada: limite atingido' },
+    ],
+  },
+  {
+    id: 'auto-3',
+    title: 'Sincronização com ERP',
+    status: 'offline',
+    onlineSince: '-',
+    info: 'Automação desativada',
+    logs: [
+      { date: '2025-01-30 18:00', message: 'Automação desativada manualmente' },
+    ],
+  },
+];
+
