@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  front-cyaza:
+    build: .
+    container_name: cyaza-next-app
+    ports:
+      - "4200:4200"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NODE_ENV=development
+      - WATCHPACK_POLLING=true # Necessário para o hot reload funcionar bem no Docker
+    stdin_open: true
+    tty: true
