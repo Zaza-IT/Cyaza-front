@@ -1,30 +1,51 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  // Ativa o Strict Mode para ajudar a detetar problemas no ciclo de vida do React
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
   reactStrictMode: true,
 
-  // Configuração de Imagens
-  // Necessária para permitir o carregamento de imagens de domínios externos 
-  // caso uses o componente 'next/image' (altamente recomendado para produção)
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'api.dicebear.com', // Para os avatares dos utilizadores
+        hostname: 'api.dicebear.com',
         pathname: '/**',
       },
       {
         protocol: 'https',
-        hostname: 'images.unsplash.com', // Caso uses fotos de stock
+        hostname: 'images.unsplash.com',
         pathname: '/**',
       },
     ],
   },
-  
-  // Se precisares de desativar o linting durante a build (útil em MVPs rápidos)
-  // eslint: {
-  //   ignoreDuringBuilds: true,
-  // },
+
+  // AQUI A MÁGICA ACONTECE
+  async rewrites() {
+    // URL interna do Easypanel (nome do serviço:porta)
+    const DJANGO_API_URL = 'http://app_backend:8000';
+
+    return [
+      {
+        // Roteia chamadas de API
+        source: '/api/:path*',
+        destination: `${DJANGO_API_URL}/api/:path*`,
+      },
+      {
+        // Roteia o painel administrativo do Django
+        source: '/admin/:path*',
+        destination: `${DJANGO_API_URL}/admin/:path*`,
+      },
+      {
+        // Necessário para o CSS/JS do Django Admin e DRF
+        source: '/static/:path*',
+        destination: `${DJANGO_API_URL}/static/:path*`,
+      },
+      {
+        // Caso use upload de mídia local
+        source: '/media/:path*',
+        destination: `${DJANGO_API_URL}/media/:path*`,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
