@@ -17,4 +17,5 @@ EXPOSE 4200
 
 # Comando para rodar em modo desenvolvimento na porta 4200
 # O hostname 0.0.0.0 é obrigatório para o Docker funcionar
+#alterado nome para docker filme minusculo
 CMD ["npm", "run", "dev", "--", "-p", "4200", "-H", "0.0.0.0"]
