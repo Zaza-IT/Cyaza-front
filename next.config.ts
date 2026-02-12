@@ -1,8 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Mantemos o modo estrito
   reactStrictMode: true,
 
+  // Suas configurações de imagem originais
   images: {
     remotePatterns: [
       {
@@ -17,30 +19,27 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-
-  // AQUI A MÁGICA ACONTECE
+  
+  // AQUI É O PULO DO GATO
+  // Isso funciona tanto em 'npm run dev' quanto em prod
   async rewrites() {
-    // URL interna do Easypanel (nome do serviço:porta)
+    // Endereço interno do container Django no Easypanel
     const DJANGO_API_URL = 'http://app_backend:8000';
 
     return [
       {
-        // Roteia chamadas de API
         source: '/api/:path*',
         destination: `${DJANGO_API_URL}/api/:path*`,
       },
       {
-        // Roteia o painel administrativo do Django
         source: '/admin/:path*',
         destination: `${DJANGO_API_URL}/admin/:path*`,
       },
       {
-        // Necessário para o CSS/JS do Django Admin e DRF
         source: '/static/:path*',
         destination: `${DJANGO_API_URL}/static/:path*`,
       },
       {
-        // Caso use upload de mídia local
         source: '/media/:path*',
         destination: `${DJANGO_API_URL}/media/:path*`,
       },
