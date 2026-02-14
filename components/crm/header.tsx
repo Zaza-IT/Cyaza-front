@@ -1,7 +1,7 @@
 import { Search, Bell } from 'lucide-react';
 import { getSessionData } from '@/lib/auth/actions';
 import { UserMenu } from './user-menu';
-
+// This component is server-side rendered to fetch session data and provide a responsive header for the CRM application.
 export async function CRMHeader() {
   const session = await getSessionData();
   
