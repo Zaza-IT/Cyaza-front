@@ -1,21 +1,38 @@
-# Usando Node 18 ou superior para compatibilidade com Next 15
-FROM node:20-alpine
-
+# Etapa 1: Instalação de dependências
+FROM node:20-alpine AS deps
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci
 
-# Copia os arquivos de configuração de pacotes
-COPY package*.json ./
-
-# Instala as dependências (usando --frozen-lockfile se tiver um lock file, ou apenas install)
-RUN npm install
-
-# Copia o restante do código
+# Etapa 2: Build da aplicação
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Expõe a porta solicitada
+# Argumentos para a API (Crucial para Next.js)
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+
+RUN npm run build
+
+# Etapa 3: Runner (Imagem final leve)
+FROM node:20-alpine AS runner
+WORKDIR /app
+
+
+# Criar utilizador não-root por segurança
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+
+USER nextjs
+
 EXPOSE 4200
 
-# Comando para rodar em modo desenvolvimento na porta 4200
-# O hostname 0.0.0.0 é obrigatório para o Docker funcionar
-#alterado nome para docker filme minusculo
-CMD ["npm", "run", "dev", "--", "-p", "4200", "-H", "0.0.0.0"]
+CMD ["npm", "start", "--", "-p", "4200", "-H", "0.0.0.0"]
