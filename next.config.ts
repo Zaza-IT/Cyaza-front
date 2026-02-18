@@ -1,30 +1,50 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  // Ativa o Strict Mode para ajudar a detetar problemas no ciclo de vida do React
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  // Mantemos o modo estrito
   reactStrictMode: true,
 
-  // Configuração de Imagens
-  // Necessária para permitir o carregamento de imagens de domínios externos 
-  // caso uses o componente 'next/image' (altamente recomendado para produção)
+  // Suas configurações de imagem originais
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'api.dicebear.com', // Para os avatares dos utilizadores
+        hostname: 'api.dicebear.com',
         pathname: '/**',
       },
       {
         protocol: 'https',
-        hostname: 'images.unsplash.com', // Caso uses fotos de stock
+        hostname: 'images.unsplash.com',
         pathname: '/**',
       },
     ],
   },
   
-  // Se precisares de desativar o linting durante a build (útil em MVPs rápidos)
-  // eslint: {
-  //   ignoreDuringBuilds: true,
-  // },
+  // AQUI É O PULO DO GATO
+  // Isso funciona tanto em 'npm run dev' quanto em prod
+  async rewrites() {
+    // Endereço interno do container Django no Easypanel
+    const DJANGO_API_URL = 'http://app_backend:8000';
+
+    return [
+      {
+        source: '/api/:path*',
+        destination: `${DJANGO_API_URL}/api/:path*`,
+      },
+      {
+        source: '/admin/:path*',
+        destination: `${DJANGO_API_URL}/admin/:path*`,
+      },
+      {
+        source: '/static/:path*',
+        destination: `${DJANGO_API_URL}/static/:path*`,
+      },
+      {
+        source: '/media/:path*',
+        destination: `${DJANGO_API_URL}/media/:path*`,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
